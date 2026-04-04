@@ -1,0 +1,409 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tokyo Trip 2026 🌸</title>
+    <style>
+        :root {
+            --sakura: #fdf2f4;
+            --sky: #eef7fb;
+            --mimosa: #fff9e6;
+            --accent-pink: #f2bac9;
+            --accent-blue: #b4d4e2;
+            --text: #5a5a5a;
+            --border: #f0f0f0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--sakura);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 500px;
+            background: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 40px rgba(0,0,0,0.05);
+        }
+
+        /* --- Toolbar & Save --- */
+        .toolbar {
+            background: var(--mimosa);
+            padding: 12px;
+            text-align: center;
+            font-size: 0.8rem;
+            position: sticky;
+            top: 0;
+            z-index: 1001;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-save {
+            background: white;
+            border: 1px solid var(--accent-pink);
+            padding: 5px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--sakura), var(--sky));
+            padding: 25px;
+            text-align: center;
+        }
+
+        /* --- Navigation --- */
+        .nav {
+            display: flex;
+            background: white;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 45px;
+            z-index: 1000;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 15px 5px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #ccc;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .tab-btn.active {
+            color: var(--text);
+            border-bottom: 3px solid var(--accent-pink);
+        }
+
+        .tab-content { padding: 20px; display: none; }
+        .tab-content.active { display: block; }
+
+        /* --- Flight & Schedule --- */
+        .flight-info {
+            background: var(--sky);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-left: 5px solid var(--accent-blue);
+        }
+
+        .day-filter {
+            margin-bottom: 25px;
+            background: var(--mimosa);
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid var(--accent-blue);
+            background: white;
+        }
+
+        .day-block { display: block; margin-bottom: 30px; }
+        .day-title { font-size: 1.1rem; font-weight: bold; color: #d193a5; margin-bottom: 15px; border-bottom: 1px solid var(--sakura); padding-bottom: 5px; }
+
+        .item-row {
+            display: flex;
+            align-items: flex-start; /* Align all content to TOP */
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .time-box {
+            width: 55px;
+            color: #999;
+            font-weight: bold;
+            font-size: 0.85rem;
+            padding-top: 2px; /* Visual micro-alignment */
+        }
+
+        .desc-box {
+            flex: 1;
+            outline: none;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .btn-del {
+            color: #ffcccc;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 0 5px;
+        }
+
+        .btn-add-act {
+            width: 100%;
+            padding: 8px;
+            background: none;
+            border: 1px dashed #ddd;
+            color: #aaa;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        /* --- Shopping & Destinations --- */
+        .input-group { display: flex; gap: 5px; margin-bottom: 15px; }
+        input { padding: 10px; border: 1px solid #eee; border-radius: 8px; flex: 1; }
+        
+        .dest-chip {
+            font-size: 0.7rem;
+            background: var(--sky);
+            padding: 3px 8px;
+            border-radius: 5px;
+            color: #6a8ea0;
+            font-weight: bold;
+        }
+
+        .total-card {
+            background: var(--mimosa);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        [contenteditable="true"]:focus { background: #fffcf0; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div class="toolbar">
+        <span>Click any text to edit! ✨</span>
+        <button class="btn-save" onclick="exportHTML()">Export &amp; Save My Trip</button>
+    </div>
+
+    <header>
+        <h1 contenteditable="true">🗻 ᴛᴏᴋʏᴏ 🗼</h1>
+        <p contenteditable="true"><span style="font-family: &quot;Helvetica Neue&quot;; font-size: 13px;">(⸝⸝ᵕᴗᵕ⸝⸝)&nbsp;</span><span style="font-family: &quot;.Apple Color Emoji UI&quot;; font-size: 11px;">✨</span>&nbsp;𝗔𝗽𝗿𝗶𝗹 𝟳 - 𝗔𝗽𝗿𝗶𝗹 𝟭𝟯&nbsp;<br></p>
+    </header>
+
+    <div class="nav">
+        <button class="tab-btn active" onclick="switchTab(event, 'tab-sched')">Schedule</button>
+        <button class="tab-btn" onclick="switchTab(event, 'tab-buy')">Shopping</button>
+        <button class="tab-btn" onclick="switchTab(event, 'tab-money')">Ledger</button>
+    </div>
+
+    <!-- SCHEDULE TAB -->
+    <div id="tab-sched" class="tab-content active">
+        <div class="day-filter">
+            <select id="daySelector" onchange="filterDays()">
+                <option value="all">Show All Days</option>
+                <option value="d1">April 7 - Arrival</option>
+                <option value="d2">April 8</option>
+                <option value="d3">April 9</option>
+                <option value="d4">April 10</option>
+                <option value="d5">April 11</option>
+                <option value="d6">April 12</option>
+                <option value="d7">April 13 - Departure</option>
+            </select>
+        </div>
+
+        <!-- Flight Info Arrival -->
+        <div class="flight-info" id="flight-arr" style="display: block;">
+            <div contenteditable="true">
+                <strong>🛫 ARRIVAL DETAILS</strong><br>
+                Flight: NH812 | Arriving: 11:30 AM<br>
+                Pickup: Narita Airport 🧸
+            </div>
+        </div>
+
+        <div id="schedule-list">
+            <!-- Day 1 -->
+            <div id="d1" class="day-block" style="display: block;">
+                <div class="day-title" contenteditable="true">Tuesday, 7 April</div>
+                <div class="activities">
+                    <div class="item-row">
+                        <div class="time-box" contenteditable="true">14:00</div>
+                        <div class="desc-box" contenteditable="true">Hotel Check-in &amp; Rest 🏨</div>
+                        <button class="btn-del" onclick="this.parentElement.remove()">×</button>
+                    </div>
+                </div>
+                <button class="btn-add-act" onclick="addAct(this)">+ Add Activity</button>
+            </div>
+
+            <!-- Day 2 -->
+            <div id="d2" class="day-block" style="display: block;">
+                <div class="day-title" contenteditable="true">Wednesday, 8 April</div>
+                <div class="activities">
+                    <div class="item-row">
+                        <div class="time-box" contenteditable="true">10:00</div>
+                        <div class="desc-box" contenteditable="true">Shinjuku Gyoen Garden 🌸</div>
+                        <button class="btn-del" onclick="this.parentElement.remove()">×</button>
+                    </div>
+                </div>
+                <button class="btn-add-act" onclick="addAct(this)">+ Add Activity</button>
+            </div>
+
+            <!-- Pre-populated placeholders for D3-D6 -->
+            <div id="d3" class="day-block" style="display: block;"><div class="day-title" contenteditable="true">Thursday, 9 April</div><div class="activities"></div><button class="btn-add-act" onclick="addAct(this)">+ Add Activity</button></div>
+            <div id="d4" class="day-block" style="display: block;"><div class="day-title" contenteditable="true">Friday, 10 April</div><div class="activities"></div><button class="btn-add-act" onclick="addAct(this)">+ Add Activity</button></div>
+            <div id="d5" class="day-block" style="display: block;"><div class="day-title" contenteditable="true">Saturday, 11 April</div><div class="activities"></div><button class="btn-add-act" onclick="addAct(this)">+ Add Activity</button></div>
+            <div id="d6" class="day-block" style="display: block;"><div class="day-title" contenteditable="true">Sunday, 12 April</div><div class="activities"></div><button class="btn-add-act" onclick="addAct(this)">+ Add Activity</button></div>
+
+            <!-- Day 7 -->
+            <div id="d7" class="day-block" style="display: block;">
+                <div class="day-title" contenteditable="true">Monday, 13 April</div>
+                <div class="flight-info" contenteditable="true">
+                    <strong>🛬 DEPARTURE DETAILS</strong><br>
+                    Flight: NH811 | Time: 18:20<br>
+                    Note: Last minute shopping at Donki! 🛍️
+                </div>
+                <div class="activities"></div>
+                <button class="btn-add-act" onclick="addAct(this)">+ Add Activity</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SHOPPING TAB -->
+    <div id="tab-buy" class="tab-content">
+        <div class="input-group">
+            <input type="text" id="buy-item" placeholder="Item name...">
+            <select id="buy-dest-sel" style="flex:0.7;">
+                <option value="Shibuya">Shibuya</option>
+                <option value="Ginza">Ginza</option>
+                <option value="Akihabara">Akihabara</option>
+                <option value="Donki">Donki</option>
+                <option value="Airport">Airport</option>
+            </select>
+            <button class="btn-save" onclick="addBuy()" style="border-radius:8px;">+</button>
+        </div>
+        
+        <p style="font-size: 0.7rem; color: #999;">Note: You can edit the destination names in the dropdown or list directly!</p>
+        
+        <div id="shopping-list">
+            <!-- Sample -->
+            
+        </div>
+    </div>
+
+    <!-- LEDGER TAB -->
+    <div id="tab-money" class="tab-content">
+        <div class="input-group">
+            <input type="text" id="exp-name" placeholder="Expense (e.g. Ramen)">
+            <input type="number" id="exp-amt" placeholder="JPY ¥">
+            <button class="btn-save" onclick="addExp()" style="border-radius:8px;">+</button>
+        </div>
+        <div id="ledger-list"></div>
+        <div class="total-card">
+            <span style="font-size:0.8rem; color:#888;">TOTAL EXPENDITURE</span><br>
+            <span style="font-size:1.8rem; color:#8e8055;">¥ <span id="grand-total">0</span></span>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Tab Logic
+    function switchTab(e, id) {
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        e.currentTarget.classList.add('active');
+    }
+
+    // Schedule Filter Logic
+    function filterDays() {
+        const val = document.getElementById('daySelector').value;
+        const blocks = document.querySelectorAll('.day-block');
+        const flights = document.querySelectorAll('.flight-info');
+
+        blocks.forEach(b => {
+            b.style.display = (val === 'all' || b.id === val) ? 'block' : 'none';
+        });
+
+        // Smart Flight Info visibility
+        document.getElementById('flight-arr').style.display = (val === 'all' || val === 'd1') ? 'block' : 'none';
+    }
+
+    // Add Activity Row
+    function addAct(btn) {
+        const container = btn.previousElementSibling;
+        const div = document.createElement('div');
+        div.className = 'item-row';
+        div.innerHTML = `
+            <div class="time-box" contenteditable="true">00:00</div>
+            <div class="desc-box" contenteditable="true">New activity...</div>
+            <button class="btn-del" onclick="this.parentElement.remove()">×</button>
+        `;
+        container.appendChild(div);
+    }
+
+    // Add Shopping Item
+    function addBuy() {
+        const item = document.getElementById('buy-item');
+        const dest = document.getElementById('buy-dest-sel');
+        if(!item.value) return;
+        
+        const div = document.createElement('div');
+        div.className = 'item-row';
+        div.style.cssText = "border-bottom:1px solid #f9f9f9; padding:10px 0;";
+        div.innerHTML = `
+            <div class="desc-box" contenteditable="true">${item.value}</div>
+            <div class="dest-chip" contenteditable="true">${dest.value}</div>
+            <button class="btn-del" onclick="this.parentElement.remove()">×</button>
+        `;
+        document.getElementById('shopping-list').appendChild(div);
+        item.value = '';
+    }
+
+    // Ledger Logic
+    let totalSpent = 0;
+    function addExp() {
+        const name = document.getElementById('exp-name');
+        const amt = document.getElementById('exp-amt');
+        if(!name.value || !amt.value) return;
+
+        const div = document.createElement('div');
+        div.className = 'item-row';
+        div.style.cssText = "border-bottom:1px solid #f9f9f9; padding:10px 0;";
+        div.innerHTML = `
+            <div class="desc-box">${name.value}</div>
+            <div style="font-weight:bold;">¥${parseInt(amt.value).toLocaleString()}</div>
+            <button class="btn-del" onclick="deleteExp(this, ${amt.value})">×</button>
+        `;
+        document.getElementById('ledger-list').appendChild(div);
+        
+        totalSpent += parseInt(amt.value);
+        document.getElementById('grand-total').innerText = totalSpent.toLocaleString();
+        name.value = ''; amt.value = '';
+    }
+
+    function deleteExp(btn, val) {
+        totalSpent -= val;
+        document.getElementById('grand-total').innerText = totalSpent.toLocaleString();
+        btn.parentElement.remove();
+    }
+
+    // Save Logic
+    function exportHTML() {
+        const html = document.documentElement.outerHTML;
+        const blob = new Blob([html], {type: 'text/html'});
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'Tokyo_Trip_2026.html';
+        a.click();
+    }
+</script>
+
+
+</body></html>
