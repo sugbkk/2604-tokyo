@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tokyo Trip 2026 🌸</title>
+    <style>
+        :root {
+            --sakura: #fdf2f4; --sky: #eef7fb; --mimosa: #fff9e6;
+            --accent-pink: #f2bac9; --accent-blue: #b4d4e2; --text: #5a5a5a;
+        }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--sakura); color: var(--text); margin: 0; display: flex; justify-content: center; }
+        .app-container { width: 100%; max-width: 500px; background: white; min-height: 100vh; display: flex; flex-direction: column; box-shadow: 0 0 40px rgba(0,0,0,0.05); }
+        
+        .toolbar { background: var(--mimosa); padding: 10px; text-align: center; font-size: 0.75rem; position: sticky; top: 0; z-index: 1001; border-bottom: 1px solid #eee; }
+        header { background: linear-gradient(135deg, var(--sakura), var(--sky)); padding: 30px 20px; text-align: center; }
+        h1 { margin: 0; font-size: 1.8rem; color: #888; letter-spacing: 2px; outline: none; }
+        .subtitle { font-size: 0.9rem; color: #aaa; margin-top: 5px; font-style: italic; outline: none; }
+
+        .nav { display: flex; background: white; border-bottom: 1px solid #eee; position: sticky; top: 37px; z-index: 1000; }
+        .tab-btn { flex: 1; padding: 12px; border: none; background: none; cursor: pointer; font-size: 0.7rem; font-weight: bold; color: #ccc; }
+        .tab-btn.active { color: var(--text); border-bottom: 3px solid var(--accent-pink); }
+        
+        .tab-content { padding: 20px; display: none; }
+        .tab-content.active { display: block; }
+
+        /* Updated font-size to 10pt */
+        .flight-card { background: var(--sky); border-radius: 15px; padding: 15px; margin-bottom: 20px; border-left: 5px solid var(--accent-blue); font-size: 10pt; line-height: 1.4; outline: none; }
+
+        .day-block { margin-bottom: 35px; border-left: 3px solid var(--accent-pink); padding-left: 15px; }
+        .day-title { font-weight: bold; color: #d193a5; font-size: 13pt; margin-bottom: 15px; outline: none; }
+        
+        .item-row { 
+            display: grid; 
+            grid-template-columns: 55px 1fr 25px; 
+            align-items: start; 
+            gap: 10px; 
+            margin-bottom: 12px;
+        }
+
+        /* Updated font-size to 10pt */
+        .time-box { 
+            color: #999; 
+            font-weight: bold; 
+            font-size: 10pt; 
+            line-height: 1.4; 
+            outline: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Updated font-size to 10pt */
+        .desc-box { 
+            font-size: 10pt; 
+            line-height: 1.4; 
+            outline: none; 
+            padding: 0;
+            margin: 0;
+            word-break: break-word;
+        }
+        
+        .btn-del { color: #ffcccc; border: none; background: none; cursor: pointer; font-size: 14pt; line-height: 1.1; align-self: start; padding: 0; }
+        .btn-add { width: 100%; padding: 8px; border: 1px dashed #ddd; background: none; color: #bbb; cursor: pointer; border-radius: 8px; margin-top: 5px; font-size: 0.8rem; }
+
+        .input-group { display: flex; gap: 8px; margin-bottom: 20px; }
+        
+        /* Updated input font-size to 10pt */
+        input, select { padding: 10px; border: 1px solid #eee; border-radius: 10px; flex: 1; outline: none; font-size: 10pt; }
+        .btn-action { background: var(--accent-pink); color: white; border: none; border-radius: 10px; padding: 0 15px; cursor: pointer; font-size: 1.2rem; }
+        
+        /* Updated font-size to 10pt */
+        .list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f9f9f9; font-size: 10pt; }
+        
+        /* Adjusted tag to be slightly smaller than the 10pt base text */
+        .dest-tag { font-size: 8pt; background: var(--mimosa); padding: 3px 8px; border-radius: 6px; color: #9e8d5a; margin-left: 10px; font-weight: bold; outline: none; }
+        
+        .total-card { background: var(--mimosa); padding: 20px; border-radius: 15px; text-align: center; margin-top: 25px; }
+        .total-val { font-size: 1.8rem; color: #8e8055; font-weight: 300; }
+    </style>
+</head>
+<body>
+<!-- Rest of the body and script remain unchanged -->
+<div class="app-container">
+    <div class="toolbar">🍡 Everything is perfectly aligned & auto-saved! 🍡</div>
+
+    <header>
+        <h1 contenteditable="true" id="trip-title" oninput="saveAll()">TOKYO SPRING 2026 🗼</h1>
+        <div class="subtitle" contenteditable="true" id="trip-sub" oninput="saveAll()">Cherishing the Sakura Season 🌸✨</div>
+    </header>
+
+    <div class="nav">
+        <button class="tab-btn active" onclick="switchTab(event, 'tab-sched')">🗓️ SCHEDULE</button>
+        <button class="tab-btn" onclick="switchTab(event, 'tab-buy')">🛍️ SHOPPING</button>
+        <button class="tab-btn" onclick="switchTab(event, 'tab-money')">💰 LEDGER</button>
+    </div>
+
+    <div id="tab-sched" class="tab-content active">
+        <select id="dayFilter" onchange="filterDays()" style="margin-bottom: 20px; width: 100%;">
+            <option value="all">📍 Show All Days</option>
+            <option value="d1">April 7 - Arrival</option>
+            <option value="d2">April 8</option><option value="d3">April 9</option>
+            <option value="d4">April 10</option><option value="d5">April 11</option>
+            <option value="d6">April 12</option><option value="d7">April 13 - Departure</option>
+        </select>
+        <div id="flight-arrival-container"></div>
+        <div id="schedule-container"></div>
+        <div id="flight-departure-container"></div>
+    </div>
+
+    <div id="tab-buy" class="tab-content">
+        <div class="input-group">
+            <input type="text" id="buy-name" placeholder="Item...">
+            <input type="text" id="buy-dest" placeholder="Where?" style="flex:0.7">
+            <button class="btn-action" onclick="addItem('buy')">+</button>
+        </div>
+        <div id="buy-list"></div>
+    </div>
+
+    <div id="tab-money" class="tab-content">
+        <div class="input-group">
+            <input type="text" id="exp-name" placeholder="Expense...">
+            <input type="number" id="exp-amt" placeholder="¥">
+            <button class="btn-action" onclick="addItem('exp')">+</button>
+        </div>
+        <div id="exp-list"></div>
+        <div class="total-card">
+            <div style="font-size: 0.75rem; color: #999; margin-bottom: 5px;">ESTIMATED TOTAL SPENT</div>
+            <div class="total-val">¥ <span id="total-val-display">0</span></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let tripData = JSON.parse(localStorage.getItem('tokyoTrip2026Data')) || {
+        title: "TOKYO SPRING 2026 🗼",
+        sub: "Cherishing the Sakura Season 🌸✨",
+        arrivalFlight: "🛫 <b>ARRIVAL FLIGHT</b><br>Flight: CX524 | Arriving: 11:30 AM<br>Narita Terminal 2 🧸",
+        departureFlight: "🛬 <b>DEPARTURE FLIGHT</b><br>Flight: CX521 | Time: 18:20 PM<br>Last minute shopping at Duty Free! 🛍️",
+        days: [
+            { id: 'd1', date: 'Tuesday, 7 April', acts: [{t:'14:00', d:'Check-in at Hotel 🏨'}] },
+            { id: 'd2', date: 'Wednesday, 8 April', acts: [{t:'10:00', d:'Shinjuku Gyoen Garden 🌸'}] },
+            { id: 'd3', date: 'Thursday, 9 April', acts: [] }, { id: 'd4', date: 'Friday, 10 April', acts: [] },
+            { id: 'd5', date: 'Saturday, 11 April', acts: [] }, { id: 'd6', date: 'Sunday, 12 April', acts: [] },
+            { id: 'd7', date: 'Monday, 13 April', acts: [] }
+        ],
+        shopping: [],
+        expenses: []
+    };
+
+    function saveAll() {
+        tripData.title = document.getElementById('trip-title').innerText;
+        tripData.sub = document.getElementById('trip-sub').innerText;
+        localStorage.setItem('tokyoTrip2026Data', JSON.stringify(tripData));
+    }
+
+    function render() {
+        document.getElementById('trip-title').innerText = tripData.title;
+        document.getElementById('trip-sub').innerText = tripData.sub;
+        document.getElementById('flight-arrival-container').innerHTML = `<div class="flight-card" contenteditable="true" oninput="tripData.arrivalFlight=this.innerHTML;saveAll()">${tripData.arrivalFlight}</div>`;
+        document.getElementById('flight-departure-container').innerHTML = `<div class="flight-card" contenteditable="true" oninput="tripData.departureFlight=this.innerHTML;saveAll()">${tripData.departureFlight}</div>`;
+
+        const schedCont = document.getElementById('schedule-container');
+        schedCont.innerHTML = '';
+        tripData.days.forEach((day, dIdx) => {
+            let html = `<div id="${day.id}" class="day-block">
+                <div class="day-title" contenteditable="true" oninput="tripData.days[${dIdx}].date=this.innerText;saveAll()">${day.date}</div>`;
+            day.acts.forEach((act, aIdx) => {
+                html += `<div class="item-row">
+                    <div class="time-box" contenteditable="true" oninput="tripData.days[${dIdx}].acts[${aIdx}].t=this.innerText;saveAll()">${act.t}</div>
+                    <div class="desc-box" contenteditable="true" oninput="tripData.days[${dIdx}].acts[${aIdx}].d=this.innerText;saveAll()">${act.d}</div>
+                    <button class="btn-del" onclick="removeAct(${dIdx}, ${aIdx})">×</button>
+                </div>`;
+            });
+            html += `<button class="btn-add" onclick="addAct(${dIdx})">+ Add Activity 🍵</button></div>`;
+            schedCont.innerHTML += html;
+        });
+
+        const buyList = document.getElementById('buy-list');
+        buyList.innerHTML = '';
+        tripData.shopping.forEach((item, i) => {
+            buyList.innerHTML += `<div class="list-item">
+                <span contenteditable="true" oninput="tripData.shopping[${i}].n=this.innerText;saveAll()">${item.n}</span>
+                <span><span class="dest-tag" contenteditable="true" oninput="tripData.shopping[${i}].l=this.innerText;saveAll()">${item.l}</span>
+                <button class="btn-del" onclick="removeItem('shopping', ${i})">×</button></span>
+            </div>`;
+        });
+
+        const expList = document.getElementById('exp-list');
+        let total = 0;
+        expList.innerHTML = '';
+        tripData.expenses.forEach((item, i) => {
+            total += parseInt(item.a);
+            expList.innerHTML += `<div class="list-item">
+                <span>${item.n}</span>
+                <span>¥${parseInt(item.a).toLocaleString()} <button class="btn-del" onclick="removeItem('expenses', ${i})">×</button></span>
+            </div>`;
+        });
+        document.getElementById('total-val-display').innerText = total.toLocaleString();
+        filterDays();
+    }
+
+    function switchTab(e, id) {
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        e.currentTarget.classList.add('active');
+    }
+
+    function addAct(dIdx) {
+        tripData.days[dIdx].acts.push({t:'00:00', d:'New activity... ✨'});
+        saveAll(); render();
+    }
+
+    function removeAct(dIdx, aIdx) {
+        tripData.days[dIdx].acts.splice(aIdx, 1);
+        saveAll(); render();
+    }
+
+    function addItem(type) {
+        if(type === 'buy') {
+            const n = document.getElementById('buy-name'), l = document.getElementById('buy-dest');
+            if(!n.value) return;
+            tripData.shopping.push({n: n.value, l: l.value || 'General'});
+            n.value = ''; l.value = '';
+        } else {
+            const n = document.getElementById('exp-name'), a = document.getElementById('exp-amt');
+            if(!n.value || !a.value) return;
+            tripData.expenses.push({n: n.value, a: a.value});
+            n.value = ''; a.value = '';
+        }
+        saveAll(); render();
+    }
+
+    function removeItem(type, i) {
+        tripData[type].splice(i, 1);
+        saveAll(); render();
+    }
+
+    function filterDays() {
+        const val = document.getElementById('dayFilter').value;
+        document.querySelectorAll('.day-block').forEach(b => b.style.display = (val==='all' || b.id===val) ? 'block' : 'none');
+        document.getElementById('flight-arrival-container').style.display = (val==='all' || val==='d1') ? 'block' : 'none';
+        document.getElementById('flight-departure-container').style.display = (val==='all' || val==='d7') ? 'block' : 'none';
+    }
+
+    render();
+</script>
+</body>
+</html>
